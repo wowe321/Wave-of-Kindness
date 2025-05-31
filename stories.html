@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Історії Добра — Хвиля Добра</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="stories.css">
+    <script defer src="stories.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>📖 Історії Добра</h1>
+        <p class="subtitle">Натхнення від справжніх людей</p>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="profile.html" class="profile-btn">Профіль</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="section-box">
+            <h2>🔍 Пошук за ID користувача</h2>
+            <input type="text" id="user-id-input" placeholder="Введи свій ID (наприклад 123456)">
+            <button type="button" id="save-id-btn">Підтвердити</button>
+        </section>
+
+        <section class="section-box">
+            <h2>✨ Поділись своєю історією</h2>
+            <form id="story-form" class="story-form">
+                <div class="form-group">
+                    <label for="name">Ім’я:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="city">Місто:</label>
+                    <input type="text" id="city" name="city">
+                </div>
+
+                <div class="form-group">
+                    <label for="story">Історія добра:</label>
+                    <textarea id="story" name="story" rows="5" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="media">Фото або відео (необов’язково):</label>
+                    <input type="file" id="media" name="media" accept="image/*,video/*">
+                </div>
+
+                <button type="submit" class="btn">Надіслати історію</button>
+            </form>
+        </section>
+
+        <section class="section-box">
+            <h2>📝 Усі історії</h2>
+            <div id="stories-list" class="story-grid">
+                <!-- сюди додаватимуться історії -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Хвиля Добра | З любов’ю для світу</p>
+    </footer>
+</body>
+
+</html>
