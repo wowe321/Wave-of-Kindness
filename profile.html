@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профіль користувача — Хвиля Добра</title>
+    <link rel="stylesheet" href="../style.css">
+    <script defer src="../jawa%20scrypt%20code/profile.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>👤 Профіль учасника</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="stories.html" class="profile-btn">Історії добра</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="section-box">
+            <h2>Загальна інформація</h2>
+            <p><strong>Ім’я:</strong> Любов</p>
+            <p><strong>Місто:</strong> Київ</p>
+            <p><strong>Чим можу допомогти:</strong> Підтримка, психологічна допомога, розробка ІТ-рішень</p>
+            <p><strong>Реферальне посилання:</strong> <a href="https://t.me/Wave_of_Kindness_bot?start=123456">t.me/Wave_of_Kindness_bot?start=123456</a></p>
+        </section>
+
+        <section class="section-box">
+            <h2>Запрошені учасники</h2>
+            <ul id="ref-users">
+                <li>Ірина (Львів)</li>
+                <li>Олександр (Одеса)</li>
+                <li>Марина (Харків)</li>
+            </ul>
+        </section>
+
+        <section class="section-box">
+            <h2>🌊 Граф хвилі</h2>
+            <div id="wave-graph">
+                <p>Твоя хвиля добра</p>
+                <svg width="300" height="200">
+          <!-- простий демо-граф -->
+          <circle cx="150" cy="50" r="20" fill="#00bcd4" />
+          <line x1="150" y1="70" x2="80" y2="130" stroke="#888" />
+          <line x1="150" y1="70" x2="220" y2="130" stroke="#888" />
+          <circle cx="80" cy="130" r="15" fill="#4dd0e1" />
+          <circle cx="220" cy="130" r="15" fill="#4dd0e1" />
+        </svg>
+                <p class="note">* Це лише приклад. Для справжньої хвилі — динамічний рендер через JS або D3.js</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Хвиля Добра | З любов’ю для світу</p>
+    </footer>
+</body>
+
+</html>
