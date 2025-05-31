@@ -1,0 +1,249 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4faff;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    background-color: #d0f0ff;
+    padding: 2rem;
+    text-align: center;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+    font-style: italic;
+    color: #555;
+}
+
+main {
+    padding: 2rem;
+    max-width: 800px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section-box {
+    background: white;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    width: 100%;
+}
+
+ul {
+    padding-left: 1.5rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #00bcd4;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #019ab0;
+}
+
+.btn:focus {
+    outline: 3px solid #4dd0e1;
+    outline-offset: 2px;
+}
+
+.btn.big {
+    font-size: 1.2rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #eee;
+    font-size: 0.9rem;
+    width: 100%;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+nav {
+    margin-top: 1rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #007a99;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+    color: #004d66;
+    text-decoration: underline;
+}
+
+.profile-btn {
+    background-color: #00bcd4;
+    color: #fff !important;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, transform 0.2s;
+    box-shadow: 0 2px 6px rgba(0, 188, 212, 0.3);
+}
+
+.profile-btn:hover {
+    background-color: #019ab0;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+
+.profile-btn:focus {
+    outline: 2px solid #4dd0e1;
+    outline-offset: 2px;
+}
+
+.note {
+    font-size: 0.85rem;
+    color: #888;
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.story-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"],
+textarea,
+input[type="file"] {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.story-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.story-card {
+    background: #fff;
+    padding: 1.2rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.story-card:hover {
+    transform: scale(1.01);
+}
+
+.story-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.3rem;
+}
+
+.story-card p {
+    margin: 0.3rem 0;
+}
+
+.story-card .note {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.reg-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.reg-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    background-color: #00bcd4;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.reg-buttons button:hover {
+    background-color: #0097a7;
+}
+
+.register-btn-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.btn-register-site,
+.btn-register-bot {
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-register-site {
+    background-color: #00bcd4;
+    color: #fff;
+}
+
+.btn-register-site:hover {
+    background-color: #019ab0;
+    transform: scale(1.03);
+}
+
+.btn-register-bot {
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+}
+
+.btn-register-bot:hover {
+    background-color: #d5d5d5;
+    transform: scale(1.03);
+}
