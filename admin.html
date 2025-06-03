@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Адмін панель — Хвилі Добра</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #e0f2ff;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #1565c0;
+            margin-bottom: 20px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        
+        th,
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        
+        th {
+            background: #2196f3;
+            color: white;
+        }
+        
+        tr:hover {
+            background-color: #f1f9ff;
+        }
+        
+        .btn {
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            color: white;
+        }
+        
+        .btn-message {
+            background-color: #2196f3;
+        }
+        
+        .btn-message:hover {
+            background-color: #1565c0;
+        }
+        
+        .btn-block {
+            background-color: #f44336;
+        }
+        
+        .btn-block:hover {
+            background-color: #b71c1c;
+        }
+        
+        .blocked-list {
+            margin: 30px auto 0;
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            text-align: left;
+        }
+        
+        .blocked-list h2 {
+            margin-top: 0;
+            color: #f44336;
+            text-align: center;
+        }
+        
+        .no-data {
+            font-style: italic;
+            color: #777;
+            text-align: center;
+        }
+        
+        .main-header {
+            background: #2196f3;
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 0;
+            width: 100%;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .header-btn {
+            background: white;
+            color: #2196f3;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        
+        .header-btn:hover {
+            background: #e3f2fd;
+            color: #1565c0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+        
+        .negative-feedback {
+            background-color: #ffebee;
+        }
+        
+        .feedback-text {
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .feedback-text.expanded {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+        }
+        
+        .expand-feedback {
+            color: #2196f3;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 12px;
+        }
+        
+        .timestamp {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">🌊 Хвилі Добра</div>
+            <nav class="header-nav">
+                <a class="header-btn" href="index.html">Карта</a>
+                <a class="header-btn" href="profile.html">профіль</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>Адмін панель: негативні відгуки</h1>
+
+            <table id="feedbackTable">
+                <thead>
+                    <tr>
+                        <th>ID відгуку</th>
+                        <th>Хто залишив</th>
+                        <th>На кого</th>
+                        <th>Дата</th>
+                        <th>Текст відгуку</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Тут будуть рядки -->
+                </tbody>
+            </table>
+
+            <div class="blocked-list" id="blockedList">
+                <h2>Заблоковані користувачі</h2>
+                <ul id="blockedUsersUl">
+                    <!-- Список заблокованих -->
+                </ul>
+                <div id="noBlocked" class="no-data">Поки що немає заблокованих користувачів</div>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Mock database - in a real app you would fetch this from a server
+        const feedbackDatabase = [{
+            id: "1",
+            fromUserId: "2106431200",
+            fromUserName: "Іван Петренко",
+            fromUserLink: "https://t.me/ivan_petrenko",
+            toUserId: "7148034659",
+            toUserName: "Дмитро Сантехнік",
+            toUserLink: "https://t.me/dmitry_santehnik",
+            timestamp: "2023-05-15 14:30",
+            text: "Цей сантехнік нічого не вміє, тільки час марнував. Не рекомендую! Прийшов, подивився, сказав що не його профіль і пішов."
+        }, {
+            id: "2",
+            fromUserId: "999888777",
+            fromUserName: "Олександра Коваль",
+            fromUserLink: "https://t.me/olexandra_koval",
+            toUserId: "2106431200",
+            toUserName: "Роман Бухгалтер",
+            toUserLink: "https://t.me/roman_accountant",
+            timestamp: "2023-05-16 09:15",
+            text: "Обіцяв допомогти з податками, але так і не відповів на повідомлення. Дуже невідповідально."
+        }, {
+            id: "3",
+            fromUserId: "555666777",
+            fromUserName: "Марія Сидоренко",
+            fromUserLink: "https://t.me/maria_sydorenko",
+            toUserId: "999888777",
+            toUserName: "Андрій Менеджер",
+            toUserLink: "https://t.me/andriy_manager",
+            timestamp: "2023-05-17 18:45",
+            text: "Дуже грубо поводився, не вміє спілкуватися з клієнтами. Технічну проблему так і не вирішив."
+        }];
+
+        const userDatabase = {
+            "2106431200": {
+                "name": "Іван Петренко",
+                "referal": "https://t.me/ivan_petrenko"
+            },
+            "7148034659": {
+                "name": "Дмитро Сантехнік",
+                "referal": "https://t.me/dmitry_santehnik"
+            },
+            "999888777": {
+                "name": "Андрій Менеджер",
+                "referal": "https://t.me/andriy_manager"
+            },
+            "555666777": {
+                "name": "Марія Сидоренко",
+                "referal": "https://t.me/maria_sydorenko"
+            }
+        };
+
+        let blockedUsers = JSON.parse(localStorage.getItem('blockedUsers') || '{}');
+
+        const feedbackTableBody = document.querySelector('#feedbackTable tbody');
+        const blockedUsersUl = document.getElementById('blockedUsersUl');
+        const noBlockedDiv = document.getElementById('noBlocked');
+
+        function renderFeedback() {
+            feedbackTableBody.innerHTML = '';
+
+            if (feedbackDatabase.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = 6;
+                td.className = 'no-data';
+                td.textContent = 'Немає негативних відгуків.';
+                tr.appendChild(td);
+                feedbackTableBody.appendChild(tr);
+                return;
+            }
+
+            feedbackDatabase.forEach(feedback => {
+                const tr = document.createElement('tr');
+                tr.className = 'negative-feedback';
+
+                // Create feedback text element with expand functionality
+                const feedbackTextDiv = document.createElement('div');
+                feedbackTextDiv.className = 'feedback-text';
+                feedbackTextDiv.textContent = feedback.text;
+
+                const expandLink = document.createElement('span');
+                expandLink.className = 'expand-feedback';
+                expandLink.textContent = 'розгорнути';
+                expandLink.onclick = (e) => {
+                    e.preventDefault();
+                    feedbackTextDiv.classList.toggle('expanded');
+                    expandLink.textContent = feedbackTextDiv.classList.contains('expanded') ?
+                        'згорнути' : 'розгорнути';
+                };
+
+                const feedbackContainer = document.createElement('div');
+                feedbackContainer.appendChild(feedbackTextDiv);
+                feedbackContainer.appendChild(document.createElement('br'));
+                feedbackContainer.appendChild(expandLink);
+
+                tr.innerHTML = `
+                    <td>${feedback.id}</td>
+                    <td>
+                        <a href="${feedback.fromUserLink}" target="_blank">${feedback.fromUserName}</a>
+                        <div class="timestamp">ID: ${feedback.fromUserId}</div>
+                    </td>
+                    <td>
+                        <a href="${feedback.toUserLink}" target="_blank">${feedback.toUserName}</a>
+                        <div class="timestamp">ID: ${feedback.toUserId}</div>
+                    </td>
+                    <td>${feedback.timestamp}</td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-message" data-userlink="${feedback.fromUserLink}">Написати</button>
+                        <button class="btn btn-block" data-userid="${feedback.fromUserId}" data-username="${feedback.fromUserName}">Заблокувати</button>
+                    </td>
+                `;
+
+                // Insert feedback container into the TD
+                const feedbackTd = tr.querySelector('td:nth-child(5)');
+                feedbackTd.appendChild(feedbackContainer);
+
+                feedbackTableBody.appendChild(tr);
+            });
+
+            document.querySelectorAll('.btn-message').forEach(btn => {
+                btn.onclick = () => {
+                    const userLink = btn.dataset.userlink;
+                    window.open(userLink, '_blank');
+                };
+            });
+
+            document.querySelectorAll('.btn-block').forEach(btn => {
+                btn.onclick = () => {
+                    const userId = btn.dataset.userid;
+                    const userName = btn.dataset.username;
+                    blockUser(userId, userName);
+                };
+            });
+        }
+
+        function renderBlockedUsers() {
+            blockedUsersUl.innerHTML = '';
+            const blockedUsersList = Object.keys(blockedUsers);
+
+            if (blockedUsersList.length === 0) {
+                noBlockedDiv.style.display = 'block';
+                return;
+            }
+            noBlockedDiv.style.display = 'none';
+
+            blockedUsersList.forEach(userId => {
+                const user = userDatabase[userId] || {
+                    name: "Невідомий користувач"
+                };
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${user.name} (ID: ${userId})
+                    <span class="timestamp">заблоковано ${blockedUsers[userId].date || ''}</span>
+                `;
+                blockedUsersUl.appendChild(li);
+            });
+        }
+
+        function blockUser(userId, userName) {
+            if (blockedUsers[userId]) {
+                alert('Цей користувач вже заблокований.');
+                return;
+            }
+
+            if (confirm(`Ви впевнені, що хочете заблокувати користувача ${userName} (ID: ${userId})? Ця дія незворотня.`)) {
+                blockedUsers[userId] = {
+                    name: userName,
+                    date: new Date().toLocaleString('uk-UA')
+                };
+                localStorage.setItem('blockedUsers', JSON.stringify(blockedUsers));
+                renderFeedback();
+                renderBlockedUsers();
+                alert('Користувача заблоковано. Він більше не зможе реєструватися в системі.');
+            }
+        }
+
+        // Initialize the page
+        renderFeedback();
+        renderBlockedUsers();
+    </script>
+</body>
+
+</html>
