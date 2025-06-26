@@ -2,69 +2,514 @@
 <html lang="uk">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Хвиля Добра</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script defer src="script.js"></script>
-    <script defer src="map.js"></script>
-    <script defer src="server.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Всі хвилі добра — Хвилі Добра</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+         :root {
+            --blue-light: #e0f2ff;
+            --blue: #2196f3;
+            --blue-dark: #1565c0;
+            --red: #f44336;
+        }
+        
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--blue-light);
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            color: var(--blue-dark);
+            margin: 1em 0 0.5em 0;
+        }
+        
+        #citySearch {
+            max-width: 400px;
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 1em;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        
+        #map {
+            width: 90vw;
+            max-width: 1000px;
+            height: 70vh;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .popup-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 280px;
+        }
+        
+        .popup-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid #ccc;
+        }
+        
+        .popup-info {
+            flex: 1;
+            font-size: 14px;
+        }
+        
+        .popup-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: var(--blue-dark);
+        }
+        
+        .wave-count {
+            background: var(--blue);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            display: inline-block;
+            margin-top: 4px;
+        }
+        
+        .reviews {
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--red);
+        }
+        
+        .main-header {
+            width: 100%;
+            background: var(--blue);
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        main {
+            max-width: 1000px;
+            margin: 80px auto 2em auto;
+            padding: 1em;
+            background: var(--blue-light);
+            width: 90vw;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .header-btn {
+            background: white;
+            color: var(--blue-dark);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        
+        .header-btn:hover {
+            background: var(--blue-light);
+        }
+        
+        @media (max-width: 600px) {
+            body,
+            html {
+                font-size: 14px;
+            }
+            .main-header {
+                padding: 8px 12px;
+            }
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .header-nav {
+                flex-direction: column;
+                width: 100%;
+                gap: 6px;
+            }
+            .header-btn {
+                width: 100%;
+                padding: 10px;
+                text-align: center;
+                font-size: 14px;
+            }
+            h1 {
+                font-size: 1.4rem;
+                margin-top: 0.8em;
+            }
+            #citySearch {
+                max-width: 100%;
+                width: 100%;
+                font-size: 14px;
+                padding: 8px;
+            }
+            #map {
+                width: 100vw;
+                height: 60vh;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            main {
+                margin: 80px auto 2em auto;
+                padding: 1em;
+                background: var(--blue-light);
+                width: 90vw;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .popup-content {
+                max-width: 200px;
+                gap: 6px;
+            }
+            .popup-photo {
+                width: 40px;
+                height: 40px;
+            }
+            .popup-info h3 {
+                font-size: 14px;
+            }
+            .wave-count {
+                font-size: 11px;
+                padding: 1px 6px;
+            }
+            .reviews {
+                font-size: 11px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <h1>🌊 Хвиля Добра</h1>
-        <p class="subtitle">Соціальний челендж, який змінює світ — один добрий вчинок за раз</p>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#">Головна</a></li>
-                <li><a href="#how-it-works">Як це працює</a></li>
-                <li><a href="#features">Фішки</a></li>
-                <li><a href="#start">Старт</a></li>
-                <li><a href="stories.html">Історії добра</a></li>
-                <li><a href="#map">Карта добра</a></li>
-                <li><a href="profile.html" class="profile-btn">Профіль</a></li>
-            </ul>
-        </nav>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">🌊 Хвилі Добра</div>
+            <nav class="header-nav">
+                <a class="header-btn" href="profile.html">профіль</a>
+            </nav>
+        </div>
     </header>
-
     <main>
-        <section id="how-it-works" class="section-box">
-            <h2>🧩 Як це працює?</h2>
-            <p>Проста реєстрація в Telegram-боті, формування власної хвилі та відстеження, хто долучився через тебе.</p>
-            <ul>
-                <li>Реєстрація через Telegram</li>
-                <li>Унікальне посилання</li>
-                <li>Граф залучених</li>
-                <li>Нотифікації про нові дії</li>
-            </ul>
-        </section>
+        <h1>Всі хвилі добра на карті</h1>
+        <input type="text" id="citySearch" placeholder="Пошук по місту..." list="citiesList" />
+        <datalist id="citiesList"></datalist>
 
-        <section id="features" class="section-box">
-            <h2>🔥 Фішки</h2>
-            <ul>
-                <li>Челендж-механіка: ти не просто допомагаєш, ти запускаєш хвилю.</li>
-                <li>Гейміфікація: значки, досягнення, “найбільші хвилі”.</li>
-                <li>Відгуки: люди діляться, як їм допомогли, і це мотивує інших.</li>
-                <li>Звіти: щомісячна статистика добрих справ.</li>
-            </ul>
-        </section>
-
-        <section id="start" class="section-box">
-            <h2>🚀 Почати</h2>
-            <p>Натисни кнопку нижче, щоб перейти до Telegram-бота й запустити власну хвилю добра.</p>
-            <a href="https://t.me/Wave_of_Kindness_bot" class="btn big">Старт у Telegram</a>
-        </section>
-        <section id="map" class="section-box">
-            <h2>🗺️ Карта Добра</h2>
-            <div id="map-container">Карта завантажується...</div>
-        </section>
+        <div id="map"></div>
     </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sql.js@1.8.0/dist/sql-wasm.js"></script>
+    <script>
+        // Initialize SQLite database
+        let db;
+        let wavesData = [];
+        let cityCoordinates = {}; // Кеш координат міст
 
-    <footer>
-        <p>&copy; 2025 Хвиля Добра | З любов’ю для світу</p>
-    </footer>
+        // Load SQLite database
+        async function initDatabase() {
+            try {
+                const sqlPromise = initSqlJs({
+                    locateFile: file => `https://cdn.jsdelivr.net/npm/sql.js@1.8.0/dist/${file}`
+                });
+
+                const dataPromise = fetch('user_data.db').then(res => res.arrayBuffer());
+                const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
+                db = new SQL.Database(new Uint8Array(buf));
+
+                loadUserData();
+            } catch (err) {
+                console.error('Error loading database:', err);
+                // Fallback to empty data if DB fails
+                wavesData = [];
+                initializeMap();
+            }
+        }
+
+        // Функція для геокодування міста (отримання координат за назвою міста)
+        async function geocodeCity(cityName) {
+            // Якщо координати вже є в кеші - повертаємо їх
+            if (cityCoordinates[cityName]) {
+                return cityCoordinates[cityName];
+            }
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(cityName + ', Україна')}`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    // Зберігаємо координати в кеш
+                    cityCoordinates[cityName] = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+                    return cityCoordinates[cityName];
+                }
+            } catch (err) {
+                console.error('Помилка геокодування міста:', cityName, err);
+            }
+
+            // Якщо не знайшли координати - повертаємо центр України
+            return [48.3794, 31.1656];
+        }
+
+        // Load user data from SQLite database
+        async function loadUserData() {
+            try {
+                // Query all users from the database
+                const stmt = db.prepare("SELECT * FROM users");
+                wavesData = [];
+
+                while (stmt.step()) {
+                    const row = stmt.getAsObject();
+                    const city = row.city || 'Не вказано';
+
+                    // Додаємо користувача до масиву, навіть якщо місто не вказано
+                    wavesData.push({
+                        id: row.user_id.toString(),
+                        name: row.name || 'Анонім',
+                        format: row.format || 'online',
+                        specialty: row.specialty || 'Не вказано',
+                        help_description: row.help_description || 'Не вказано',
+                        referal: row.referal || '#',
+                        came_from: row.came_from || '',
+                        wave_proof: row.wave_proof || '',
+                        city: city,
+                        photo: row.photo || 'https://randomuser.me/api/portraits/lego/1.jpg'
+                    });
+                }
+
+                stmt.free();
+                populateCitiesList();
+
+                // Отримуємо координати для всіх міст
+                await processCitiesCoordinates();
+
+                initializeMap();
+            } catch (err) {
+                console.error('Error querying database:', err);
+                wavesData = [];
+                initializeMap();
+            }
+        }
+
+        // Обробляємо координати для всіх міст
+        async function processCitiesCoordinates() {
+            const cityUserCount = {}; // Лічильник користувачів по містах
+
+            // Рахуємо кількість користувачів у кожному місті
+            wavesData.forEach(user => {
+                const city = user.city || 'Не вказано';
+                cityUserCount[city] = (cityUserCount[city] || 0) + 1;
+            });
+
+            // Отримуємо координати для кожного міста
+            for (const city in cityUserCount) {
+                if (city !== 'Не вказано') {
+                    await geocodeCity(city);
+                }
+            }
+
+            // Додаємо координати до кожного користувача зі зміщенням
+            wavesData.forEach((user, index) => {
+                const city = user.city || 'Не вказано';
+
+                if (city !== 'Не вказано' && cityCoordinates[city]) {
+                    // Якщо місто відоме - додаємо невелике зміщення для кожного користувача
+                    const offset = cityUserCount[city] > 1 ?
+                        getMarkerOffset(index, cityUserCount[city]) : [0, 0];
+
+                    user.coords = [
+                        cityCoordinates[city][0] + offset[0],
+                        cityCoordinates[city][1] + offset[1]
+                    ];
+                } else {
+                    // Для невідомих міст - розкидаємо випадково навколо центру України
+                    user.coords = getRandomOffset([48.3794, 31.1656], 0.1);
+                }
+            });
+        }
+
+        // Функція для отримання зміщення маркера (щоб не накладалися)
+        function getMarkerOffset(index, total) {
+            const radius = 0.01; // Радіус розкидання (приблизно 1 км)
+            const angle = (index * (2 * Math.PI)) / total;
+            return [
+                radius * Math.cos(angle) / 2, // Ділимо на 2 для меншого зміщення по широті
+                radius * Math.sin(angle)
+            ];
+        }
+
+        // Функція для отримання випадкового зміщення
+        function getRandomOffset(center, radius) {
+            return [
+                center[0] + (Math.random() * 2 - 1) * radius,
+                center[1] + (Math.random() * 2 - 1) * radius
+            ];
+        }
+
+        // Populate datalist with unique cities from database
+        function populateCitiesList() {
+            const citiesList = document.getElementById('citiesList');
+            const uniqueCities = new Set();
+
+            wavesData.forEach(user => {
+                if (user.city && user.city !== 'Не вказано') {
+                    uniqueCities.add(user.city);
+                }
+            });
+
+            citiesList.innerHTML = '';
+            uniqueCities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                citiesList.appendChild(option);
+            });
+        }
+
+        // Initialize the map with user data
+        function initializeMap() {
+            const map = L.map('map').setView([48.3794, 31.1656], 6); // Центр України
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            let markers = [];
+
+            // Функція створення попапа для маркера
+            function createPopupContent(user) {
+                // Отримуємо параметри URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const userId = urlParams.get('id');
+
+                // Визначаємо, чи це поточний користувач
+                const isCurrentUser = userId && user.id === userId;
+                const currentUserBadge = isCurrentUser ? '<span style="color: var(--blue-dark); font-weight: bold;">(Це ви!)</span>' : '';
+
+                return `
+                    <div class="popup-content">
+                        <img class="popup-photo" src="${user.photo}" alt="Фото ${user.name}" />
+                        <div class="popup-info">
+                            <h3>${user.name} ${currentUserBadge}</h3>
+                            <div><strong>Місто:</strong> ${user.city}</div>
+                            <div class="specialty">${user.specialty}</div>
+                            <div class="help-description">${user.help_description}</div>
+                            <div class="referral-link">
+                                <strong>Посилання:</strong> <a href="${user.referal}" target="_blank">${user.referal.substring(0, 20)}...</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Додавання маркерів на карту
+            function addMarkers(filteredData) {
+                markers.forEach(m => map.removeLayer(m));
+                markers = [];
+
+                filteredData.forEach(user => {
+                    const marker = L.marker(user.coords).addTo(map);
+                    marker.bindPopup(createPopupContent(user));
+
+                    // Отримуємо параметри URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const userId = urlParams.get('id');
+
+                    // Якщо це поточний користувач, центруємо карту на ньому
+                    if (userId && user.id === userId) {
+                        map.setView(user.coords, 12);
+                        marker.openPopup();
+                    }
+
+                    markers.push(marker);
+                });
+            }
+
+            // Початкове додавання маркерів
+            addMarkers(wavesData);
+
+            // Фільтрація за містом
+            const citySearch = document.getElementById('citySearch');
+            citySearch.addEventListener('input', () => {
+                const query = citySearch.value.trim().toLowerCase();
+                if (!query) {
+                    addMarkers(wavesData);
+                    // Отримуємо параметри URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const userId = urlParams.get('id');
+
+                    // Якщо є ID користувача, центруємо на ньому, інакше - на Україні
+                    if (userId) {
+                        const currentUser = wavesData.find(user => user.id === userId);
+                        if (currentUser) {
+                            map.setView(currentUser.coords, 12);
+                            return;
+                        }
+                    }
+                    map.setView([48.3794, 31.1656], 6);
+                    return;
+                }
+
+                const filtered = wavesData.filter(user =>
+                    user.city && user.city.toLowerCase().includes(query)
+                );
+                addMarkers(filtered);
+
+                if (filtered.length > 0) {
+                    // Центруємо карту по першому знайденому
+                    map.setView(filtered[0].coords, 10);
+                }
+            });
+
+            // Оновлюємо посилання в хедері, щоб передавати ID
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id');
+            if (userId) {
+                document.querySelectorAll('.header-btn').forEach(btn => {
+                    const href = btn.getAttribute('href');
+                    if (href) {
+                        btn.setAttribute('href', `${href}?id=${userId}`);
+                    }
+                });
+            }
+        }
+
+        // Start the application
+        initDatabase();
+    </script>
 </body>
 
 </html>
